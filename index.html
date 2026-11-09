@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ברוכים הבאים | פורטל קליטה</title>
+  <meta name="description" content="פורטל הקליטה לעובדים חדשים: היכרות, מרכז למידה וטיפים לשבוע הראשון." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============ Design tokens ============ */
+    :root {
+      --bg: #f6f7fb;
+      --surface: #ffffff;
+      --surface-2: #f1f3f9;
+      --text: #1b1f2e;
+      --text-muted: #5a6175;
+      --border: #e3e6ef;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-soft: #eef0ff;
+      --accent: #0ea5a4;
+      --accent-soft: #e6f7f7;
+      --warm: #f59e0b;
+      --warm-soft: #fff6e5;
+      --success: #15803d;
+      --success-soft: #e8f6ed;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 1px 2px rgba(20, 24, 40, .04), 0 4px 16px rgba(20, 24, 40, .06);
+      --shadow-hover: 0 2px 4px rgba(20, 24, 40, .06), 0 12px 32px rgba(20, 24, 40, .10);
+      --focus: 0 0 0 3px #fff, 0 0 0 5px var(--primary);
+      color-scheme: light;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1220;
+        --surface: #171b2d;
+        --surface-2: #1e2338;
+        --text: #eef0f7;
+        --text-muted: #a4abc2;
+        --border: #2a3050;
+        --primary: #8b85ff;
+        --primary-hover: #a5a0ff;
+        --primary-soft: #23264a;
+        --accent: #2dd4bf;
+        --accent-soft: #15302f;
+        --warm: #fbbf24;
+        --warm-soft: #33290f;
+        --success: #4ade80;
+        --success-soft: #143021;
+        --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 16px rgba(0, 0, 0, .25);
+        --shadow-hover: 0 2px 4px rgba(0, 0, 0, .35), 0 12px 32px rgba(0, 0, 0, .35);
+        --focus: 0 0 0 3px var(--bg), 0 0 0 5px var(--primary);
+        color-scheme: dark;
+      }
+    }
+
+    /* ============ Base ============ */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Heebo", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 1rem;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3 { line-height: 1.25; margin: 0; }
+    p { margin: 0; }
+    a { color: var(--primary); }
+    img, svg { display: block; }
+
+    .container { width: min(1120px, 100% - 32px); margin-inline: auto; }
+
+    :focus-visible { outline: none; box-shadow: var(--focus); border-radius: 8px; }
+
+    .skip-link {
+      position: absolute; inset-inline-start: 16px; top: -60px;
+      background: var(--primary); color: #fff; padding: 10px 16px;
+      border-radius: var(--radius-sm); z-index: 100; text-decoration: none; font-weight: 700;
+      transition: top .2s;
+    }
+    .skip-link:focus { top: 16px; }
+
+    .icon { width: 22px; height: 22px; flex-shrink: 0; }
+    .icon-sm { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .visually-hidden {
+      position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+      clip: rect(0 0 0 0); white-space: nowrap;
+    }
+
+    /* ============ Top bar ============ */
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      background: color-mix(in srgb, var(--surface) 85%, transparent);
+      backdrop-filter: saturate(1.4) blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.1rem; color: var(--text); text-decoration: none; }
+    .brand-logo {
+      width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff;
+    }
+    .topnav { display: flex; gap: 4px; }
+    .topnav a {
+      color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: .95rem;
+      padding: 8px 12px; border-radius: 8px;
+    }
+    .topnav a:hover { background: var(--surface-2); color: var(--text); }
+    @media (max-width: 640px) { .topnav { display: none; } }
+
+    /* ============ Hero ============ */
+    .hero { padding: 56px 0 32px; }
+    .hero-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; align-items: stretch; }
+    @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+
+    .welcome {
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, var(--primary) 0%, #6d5ef5 55%, var(--accent) 130%);
+      color: #fff; border-radius: calc(var(--radius) + 8px); padding: clamp(28px, 5vw, 48px);
+      box-shadow: var(--shadow);
+    }
+    .welcome::after {
+      content: ""; position: absolute; inset-inline-end: -80px; bottom: -80px;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: rgba(255, 255, 255, .10);
+    }
+    .welcome::before {
+      content: ""; position: absolute; inset-inline-end: 60px; top: -60px;
+      width: 140px; height: 140px; border-radius: 50%;
+      background: rgba(255, 255, 255, .08);
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255, 255, 255, .18); padding: 6px 14px; border-radius: 999px;
+      font-size: .875rem; font-weight: 500; margin-bottom: 18px;
+    }
+    .welcome h1 { font-size: clamp(1.9rem, 4.2vw, 2.8rem); font-weight: 800; margin-bottom: 14px; position: relative; z-index: 1; }
+    .welcome p { font-size: clamp(1rem, 1.6vw, 1.125rem); opacity: .95; max-width: 60ch; position: relative; z-index: 1; }
+    .welcome p + p { margin-top: 12px; }
+
+    .hero-stats { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; position: relative; z-index: 1; }
+    .hero-stat {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255, 255, 255, .14); border: 1px solid rgba(255, 255, 255, .22);
+      padding: 8px 14px; border-radius: 12px; font-size: .9rem; font-weight: 500;
+    }
+
+    /* Contact card */
+    .contact {
+      background: var(--surface); border: 1px solid var(--border); border-radius: calc(var(--radius) + 8px);
+      padding: 28px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 18px;
+    }
+    .contact-head { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-weight: 500; font-size: .95rem; }
+    .person { display: flex; align-items: center; gap: 14px; }
+    .avatar {
+      width: 64px; height: 64px; border-radius: 50%; flex-shrink: 0;
+      display: grid; place-items: center; font-weight: 800; font-size: 1.4rem;
+      background: var(--primary-soft); color: var(--primary); border: 3px solid var(--surface);
+      box-shadow: 0 0 0 2px var(--primary-soft);
+    }
+    .person-name { font-size: 1.2rem; font-weight: 700; }
+    .person-role { color: var(--text-muted); font-size: .95rem; }
+    .contact-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+    .contact-list a {
+      display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: var(--radius-sm);
+      text-decoration: none; color: var(--text); background: var(--surface-2); font-weight: 500;
+      transition: background .15s;
+    }
+    .contact-list a:hover { background: var(--primary-soft); }
+    .contact-list .icon-sm { color: var(--primary); }
+    .contact-list .ltr { direction: ltr; unicode-bidi: isolate; }
+    .contact-note { font-size: .9rem; color: var(--text-muted); background: var(--accent-soft); padding: 10px 12px; border-radius: var(--radius-sm); }
+    .other-contacts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .mini-contact { border: 1px dashed var(--border); border-radius: var(--radius-sm); padding: 10px 12px; font-size: .9rem; }
+    .mini-contact strong { display: block; }
+    .mini-contact span { color: var(--text-muted); }
+
+    /* ============ Progress ============ */
+    .progress-wrap {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 18px 22px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+    }
+    .progress-label { font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .progress-label .icon { color: var(--success); }
+    .progress-bar { flex: 1 1 220px; height: 10px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--primary)); border-radius: inherit; transition: width .4s ease; }
+    .progress-text { color: var(--text-muted); font-size: .95rem; font-variant-numeric: tabular-nums; }
+
+    /* ============ Learning center ============ */
+    section { scroll-margin-top: 80px; }
+    .section { padding: 40px 0; }
+    .section-head { margin-bottom: 28px; max-width: 70ch; }
+    .section-head h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; margin-bottom: 8px; }
+    .section-head p { color: var(--text-muted); font-size: 1.05rem; }
+
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .filter-btn {
+      font: inherit; font-weight: 500; font-size: .95rem; cursor: pointer;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      padding: 8px 16px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .filter-btn:hover { border-color: var(--primary); }
+    .filter-btn[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    .category { margin-bottom: 40px; }
+    .category[hidden] { display: none; }
+    .category-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .category-icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; }
+    .category-icon.tools { background: var(--primary-soft); color: var(--primary); }
+    .category-icon.courses { background: var(--accent-soft); color: var(--accent); }
+    .category-icon.culture { background: var(--warm-soft); color: var(--warm); }
+    .category-head h3 { font-size: 1.3rem; font-weight: 700; }
+    .category-head p { color: var(--text-muted); font-size: .95rem; }
+
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; list-style: none; padding: 0; margin: 0; }
+
+    .card {
+      position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 22px; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .card.is-done { border-color: color-mix(in srgb, var(--success) 45%, var(--border)); }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .card-logo {
+      width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center;
+      background: var(--surface-2); color: var(--text);
+    }
+    .card-logo .icon { width: 26px; height: 26px; }
+    .duration {
+      display: inline-flex; align-items: center; gap: 6px; font-size: .85rem; font-weight: 500;
+      color: var(--text-muted); background: var(--surface-2); padding: 4px 10px; border-radius: 999px; white-space: nowrap;
+    }
+    .card h4 { font-size: 1.1rem; font-weight: 700; margin: 0; }
+    .card-desc { color: var(--text-muted); font-size: .95rem; flex: 1; }
+    .card-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 4px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font: inherit; font-weight: 700; font-size: .95rem; text-decoration: none; cursor: pointer;
+      padding: 10px 16px; border-radius: var(--radius-sm); border: 1px solid transparent;
+      background: var(--primary); color: #fff; transition: background .15s, transform .15s;
+      min-height: 44px;
+    }
+    .btn:hover { background: var(--primary-hover); }
+    .btn:active { transform: scale(.98); }
+    .btn .icon-sm { transform: scaleX(-1); } /* arrow points left in RTL */
+
+    .done-toggle {
+      display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none;
+      font-size: .9rem; color: var(--text-muted); font-weight: 500; min-height: 44px;
+    }
+    .done-toggle input { width: 18px; height: 18px; accent-color: var(--success); cursor: pointer; margin: 0; }
+    .card.is-done .done-toggle { color: var(--success); }
+
+    .internal-badge {
+      font-size: .75rem; font-weight: 700; color: var(--warm); background: var(--warm-soft);
+      padding: 2px 8px; border-radius: 6px; margin-inline-start: 6px; vertical-align: middle;
+    }
+
+    /* ============ First week timeline ============ */
+    .week { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; list-style: none; padding: 0; margin: 0; counter-reset: day; }
+    .week li {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px;
+      box-shadow: var(--shadow); position: relative;
+    }
+    .day-label { font-size: .8rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: .02em; }
+    .week strong { display: block; font-size: 1.02rem; margin: 4px 0 6px; }
+    .week p { color: var(--text-muted); font-size: .92rem; }
+
+    /* ============ Closing ============ */
+    .closing {
+      background: var(--surface); border: 1px solid var(--border); border-radius: calc(var(--radius) + 8px);
+      padding: clamp(28px, 5vw, 48px); box-shadow: var(--shadow); display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; align-items: center;
+    }
+    @media (max-width: 860px) { .closing { grid-template-columns: 1fr; } }
+    .closing h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; margin-bottom: 12px; }
+    .closing p { color: var(--text-muted); font-size: 1.05rem; }
+    .closing p + p { margin-top: 10px; }
+    .signature { margin-top: 18px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .signature .icon { color: #e11d48; }
+
+    .tip {
+      background: var(--warm-soft); border-radius: var(--radius); padding: 24px;
+      border-inline-start: 5px solid var(--warm);
+    }
+    .tip-head { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.1rem; margin-bottom: 10px; }
+    .tip-head .icon { color: var(--warm); }
+    .tip blockquote { margin: 0 0 12px; font-size: 1.15rem; font-weight: 700; color: var(--text); }
+    .tip ul { margin: 0; padding-inline-start: 20px; color: var(--text-muted); }
+    .tip li + li { margin-top: 4px; }
+
+    footer { padding: 32px 0 48px; color: var(--text-muted); font-size: .9rem; text-align: center; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+    }
+
+    @media print {
+      .topbar, .filters, .done-toggle, .skip-link { display: none !important; }
+      .card, .contact, .welcome, .closing { box-shadow: none; }
+      .welcome { color: #000; background: none; border: 1px solid #ccc; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ============================================================
+       SVG icon sprite (Lucide-style, stroke icons)
+       ============================================================ -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-sparkles" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2z"/><path d="M5 3v4M3 5h4M19 17v4M17 19h4"/></symbol>
+      <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+      <symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+      <symbol id="i-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+      <symbol id="i-wrench" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9z"/></symbol>
+      <symbol id="i-graduation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/><path d="M22 10v6"/></symbol>
+      <symbol id="i-building" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M8 10h.01M16 10h.01M12 10h.01M8 14h.01M16 14h.01M12 14h.01"/></symbol>
+      <symbol id="i-notebook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h4M2 10h4M2 14h4M2 18h4"/><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M15 2v20"/></symbol>
+      <symbol id="i-hash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></symbol>
+      <symbol id="i-kanban" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7v7M12 7v4M16 7v9"/></symbol>
+      <symbol id="i-video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4z"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+      <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></symbol>
+      <symbol id="i-briefcase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z"/></symbol>
+      <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+      <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.7-.9l-.8-1.2A2 2 0 0 0 7.9 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+      <symbol id="i-fish" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 3"/><path d="M17 3h4v4"/><path d="m21 3-6 6"/></symbol>
+      <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/></symbol>
+      <symbol id="i-lightbulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4"/><path d="M15 14c.2-1 .7-1.7 1.5-2.5A5 5 0 1 0 7.5 11.5c.8.8 1.3 1.5 1.5 2.5"/></symbol>
+      <symbol id="i-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+      <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+    </defs>
+  </svg>
+
+  <a class="skip-link" href="#main">דילוג לתוכן הראשי</a>
+
+  <!-- ============ Top bar ============ -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#top" aria-label="דף הבית של פורטל הקליטה">
+        <span class="brand-logo" aria-hidden="true"><svg class="icon"><use href="#i-sparkles"/></svg></span>
+        <span data-field="company">[שם החברה]</span>
+      </a>
+      <nav class="topnav" aria-label="ניווט ראשי">
+        <a href="#welcome">ברוכים הבאים</a>
+        <a href="#learning">מרכז למידה</a>
+        <a href="#first-week">השבוע הראשון</a>
+        <a href="#closing">טיפ להצלחה</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+
+    <!-- ============ 1. Welcome ============ -->
+    <section class="hero" id="welcome" aria-labelledby="welcome-title">
+      <div class="container hero-grid">
+        <div class="welcome">
+          <span class="eyebrow">
+            <svg class="icon-sm" aria-hidden="true"><use href="#i-sparkles"/></svg>
+            יום ראשון שלך ב<span data-field="company">[שם החברה]</span>
+          </span>
+          <h1 id="welcome-title">
+            איזה כיף שהצטרפת אלינו, <span data-field="employeeName">[שם העובד/ת]</span>! 👋
+          </h1>
+          <p>
+            אנחנו שמחים ומתרגשים לקבל אותך לצוות <strong data-field="department">[שם התפקיד / מחלקה]</strong>.
+            הפורטל הזה נבנה במיוחד בשבילך – כדי שהצעדים הראשונים שלך יהיו פשוטים, ברורים ונעימים.
+          </p>
+          <p>
+            תהליך הקליטה מחולק לשלבים קטנים: היכרות עם כלי העבודה, למידה מקצועית והיכרות עם התרבות שלנו.
+            אין "תשובות לא נכונות" ואין שאלות מיותרות – אנחנו כאן כדי לתמוך בך בכל שלב בדרך.
+          </p>
+          <div class="hero-stats">
+            <span class="hero-stat"><svg class="icon-sm" aria-hidden="true"><use href="#i-calendar"/></svg> תחילת עבודה: <span data-field="startDate">[תאריך]</span></span>
+            <span class="hero-stat"><svg class="icon-sm" aria-hidden="true"><use href="#i-grid"/></svg> 3 תחומי למידה</span>
+            <span class="hero-stat"><svg class="icon-sm" aria-hidden="true"><use href="#i-users"/></svg> מנטור/ית אישי/ת</span>
+          </div>
+        </div>
+
+        <aside class="contact" aria-labelledby="contact-title">
+          <div class="contact-head">
+            <svg class="icon-sm" aria-hidden="true"><use href="#i-chat"/></svg>
+            <h2 id="contact-title" style="font-size:inherit;font-weight:inherit">יש שאלה? פנו אליי בכל זמן</h2>
+          </div>
+          <div class="person">
+            <div class="avatar" aria-hidden="true" data-initials="mentorName">מ</div>
+            <div>
+              <div class="person-name" data-field="mentorName">[שם המנטור/ית]</div>
+              <div class="person-role" data-field="mentorRole">מנטור/ית אישי/ת · [מחלקה]</div>
+            </div>
+          </div>
+          <ul class="contact-list">
+            <li>
+              <a href="mailto:mentor@company.com" data-href="mentorEmail">
+                <svg class="icon-sm" aria-hidden="true"><use href="#i-mail"/></svg>
+                <span class="visually-hidden">אימייל: </span>
+                <span class="ltr" data-field="mentorEmail">mentor@company.com</span>
+              </a>
+            </li>
+            <li>
+              <a href="tel:+972500000000" data-href="mentorPhone">
+                <svg class="icon-sm" aria-hidden="true"><use href="#i-phone"/></svg>
+                <span class="visually-hidden">טלפון: </span>
+                <span class="ltr" data-field="mentorPhone">050-000-0000</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" data-href="mentorChat">
+                <svg class="icon-sm" aria-hidden="true"><use href="#i-hash"/></svg>
+                שליחת הודעה ב-Slack
+              </a>
+            </li>
+          </ul>
+          <div class="other-contacts">
+            <div class="mini-contact"><strong>מנהל/ת ישיר/ה</strong><span data-field="managerName">[שם המנהל/ת]</span></div>
+            <div class="mini-contact"><strong>משאבי אנוש</strong><span data-field="hrName">[שם נציג/ת HR]</span></div>
+          </div>
+          <p class="contact-note">💡 בשבועיים הראשונים נקבע פגישת "קפה ושאלות" קבועה – פשוט להגיע.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ Progress ============ -->
+    <div class="container" aria-live="polite">
+      <div class="progress-wrap">
+        <span class="progress-label">
+          <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+          ההתקדמות שלי
+        </span>
+        <div class="progress-bar" role="progressbar" aria-label="התקדמות בתוכנית הלמידה" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-text" id="progressText">0 מתוך 0 הושלמו</span>
+      </div>
+    </div>
+
+    <!-- ============ 2. Learning center ============ -->
+    <section class="section" id="learning" aria-labelledby="learning-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="learning-title">מרכז למידה והעשרה</h2>
+          <p>כל מה שצריך כדי להתחיל בביטחון – מסודר לפי נושאים. אפשר לסמן כל פריט כ"הושלם" ולעקוב אחרי ההתקדמות. הקישורים נפתחים בלשונית חדשה.</p>
+        </div>
+
+        <div class="filters" role="group" aria-label="סינון לפי קטגוריה">
+          <button class="filter-btn" type="button" data-filter="all" aria-pressed="true">הכול</button>
+          <button class="filter-btn" type="button" data-filter="tools" aria-pressed="false">
+            <svg class="icon-sm" aria-hidden="true"><use href="#i-wrench"/></svg> כלי עבודה
+          </button>
+          <button class="filter-btn" type="button" data-filter="courses" aria-pressed="false">
+            <svg class="icon-sm" aria-hidden="true"><use href="#i-graduation"/></svg> קורסים מקצועיים
+          </button>
+          <button class="filter-btn" type="button" data-filter="culture" aria-pressed="false">
+            <svg class="icon-sm" aria-hidden="true"><use href="#i-building"/></svg> נהלים ותרבות
+          </button>
+        </div>
+
+        <!-- Category: Tools -->
+        <div class="category" data-category="tools">
+          <div class="category-head">
+            <span class="category-icon tools" aria-hidden="true"><svg class="icon"><use href="#i-wrench"/></svg></span>
+            <div>
+              <h3>היכרות עם כלי העבודה</h3>
+              <p>הכלים שילוו אותך ביום־יום. מומלץ להתחיל כאן.</p>
+            </div>
+          </div>
+          <ul class="cards">
+            <li class="card" data-id="notion">
+              <div class="card-top">
+                <span class="card-logo" aria-hidden="true"><svg class="icon"><use href="#i-notebook"/></svg></span>
+                <span class="duration"><svg class="icon-sm" aria-hidden="true"><use href="#i-clock"/></svg> כ-30 דק'</span>
+              </div>
+              <h4>מדריכי Notion</h4>
+              <p class="card-desc">איך לנווט בוויקי הצוותי, ליצור עמודים ולעבוד עם מסדי נתונים פשוטים.</p>
+              <div class="card-actions">
+                <a class="btn" href="https://www.notion.com/help/guides" target="_blank" rel="noopener noreferrer">
+                  למדריך <svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg>
+                  <span class="visually-hidden">(נפתח בלשונית חדשה)</span>
+                </a>
+                <label class="done-toggle"><input type="checkbox" /> הושלם</label>
+              </div>
+            </li>
+            <li class="card" data-id="slack">
+              <div class="card-top">
+                <span class="card-logo" aria-hidden="true"><svg class="icon"><use href="#i-hash"/></svg></span>
+                <span class="duration"><svg class="icon-sm" aria-hidden="true"><use href="#i-clock"/></svg> כ-20 דק'</span>
+              </div>
+              <h4>מרכז העזרה של Slack</h4>
+              <p class="card-desc">ערוצים, שרשורים והתראות – כך מתקשרים אצלנו בלי ללכת לאיבוד.</p>
+              <div class="card-actions">
+                <a class="btn" href="https://slack.com/help" target="_blank" rel="noopener noreferrer">
+                  למדריך <svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg>
+                  <span class="visually-hidden">(נפתח בלשונית חדשה)</span>
+                </a>
+                <label class="done-toggle"><input type="checkbox" /> הושלם</label>
+              </div>
+            </li>
+            <li class="card" data-id="jira">
+              <div class="card-top">
+                <span class="card-logo" aria-hidden="true"><svg class="icon"><use href="#i-kanban"/></svg></span>
+                <span class="duration"><svg class="icon-sm" aria-hidden="true"><use href="#i-clock"/></svg> כ-45 דק'</span>
+              </div>
+              <h4>מדריכי Jira</h4>
+              <p class="card-desc">הבנת לוחות, משימות וספרינטים כדי לעקוב אחרי העבודה של הצוות.</p>
+              <div class="card-actions">
+                <a class="btn" href="https://www.atlassian.com/software/jira/guides" target="_blank" rel="noopener noreferrer">
+                  למדריך <svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg>
+                  <span class="visually-hidden">(נפתח בלשונית חדשה)</span>
+                </a>
+                <label class="done-toggle"><input type="checkbox" /> הושלם</label>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Category: Courses -->
+        <div class="category" data-category="courses">
+          <div class="category-head">
+            <span class="category-icon courses" aria-hidden="true"><svg class="icon"><use href="#i-graduation"/></svg></span>
+            <div>
+              <h3>קורסים מקצועיים חיצוניים</h3>
+              <p>העמקה מקצועית בקצב שלך – אין צורך לסיים הכול בחודש הראשון.</p>
+            </div>
+          </div>
+          <ul class="cards">
+            <li class="card" data-id="coursera">
+              <div class="card-top">
+                <span class="card-logo" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span>
+                <span class="duration"><svg class="icon-sm" aria-hidden="true"><use href="#i-clock"/></svg> 4–6 שעות</span>
+              </div>
+              <h4>Coursera</h4>
+              <p class="card-desc">קורסים אקדמיים מאוניברסיטאות מובילות בתחומי התפקיד שלך.</p>
+              <div class="card-actions">
+                <a class="btn" href="https://www.coursera.org" target="_blank" rel="noopener noreferrer">
+                  לקורס <svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg>
+                  <span class="visually-hidden">(נפתח בלשונית חדשה)</span>
+                </a>
+                <label class="done-toggle"><input type="checkbox" /> הושלם</label>
+              </div>
+            </li>
+            <li class="card" data-id="udemy">
+              <div class="card-top">
+                <span class="card-logo" aria-hidden="true"><svg class="icon"><use href="#i-play"/></svg></span>
+                <span class="duration"><svg class="icon-sm" aria-hidden="true"><use href="#i-clock"/></svg> 3–5 שעות</span>
+              </div>
+              <h4>Udemy</h4>
+              <p class="card-desc">קורסי וידאו מעשיים וממוקדים לפיתוח מיומנויות ספציפיות.</p>
+              <div class="card-actions">
+                <a class="btn" href="https://www.udemy.com" target="_blank" rel="noopener noreferrer">
+                  לקורס <svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg>
+                  <span class="visually-hidden">(נפתח בלשונית חדשה)</span>
+                </a>
+                <label class="done-toggle"><input type="checkbox" /> הושלם</label>
+              </div>
+            </li>
+            <li class="card" data-id="linkedin">
+              <div class="card-top">
+                <span class="card-logo" aria-hidden="true"><svg class="icon"><use href="#i-briefcase"/></svg></span>
+                <span class="duration"><svg class="icon-sm" aria-hidden="true"><use href="#i-clock"/></svg> כ-2 שעות</span>
+              </div>
+              <h4>LinkedIn Learning</h4>
+              <p class="card-desc">שיעורים קצרים במיומנויות רכות: ניהול זמן, תקשורת ועבודת צוות.</p>
+              <div class="card-actions">
+                <a class="btn" href="https://www.linkedin.com/learning" target="_blank" rel="noopener noreferrer">
+                  לקורס <svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg>
+                  <span class="visually-hidden">(נפתח בלשונית חדשה)</span>
+                </a>
+                <label class="done-toggle"><input type="checkbox" /> הושלם</label>
+              </div>
+            </li>
+            <li class="card" data-id="hubspot">
+              <div class="card-top">
+                <span class="card-logo" aria-hidden="true"><svg class="icon"><use href="#i-target"/></svg></span>
+                <span class="duration"><svg class="icon-sm" aria-hidden="true"><use href="#i-clock"/></svg> 2–3 שעות</span>
+              </div>
+              <h4>HubSpot Academy</h4>
+              <p class="card-desc">קורסים חינמיים עם תעודה בשיווק, מכירות ושירות לקוחות.</p>
+              <div class="card-actions">
+                <a class="btn" href="https://academy.hubspot.com" target="_blank" rel="noopener noreferrer">
+                  לקורס <svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg>
+                  <span class="visually-hidden">(נפתח בלשונית חדשה)</span>
+                </a>
+                <label class="done-toggle"><input type="checkbox" /> הושלם</label>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Category: Culture & Policies -->
+        <div class="category" data-category="culture">
+          <div class="category-head">
+            <span class="category-icon culture" aria-hidden="true"><svg class="icon"><use href="#i-building"/></svg></span>
+            <div>
+              <h3>נהלים ותרבות ארגונית</h3>
+              <p>מי אנחנו, איך אנחנו עובדים ואיך שומרים יחד על המידע.</p>
+            </div>
+          </div>
+          <ul class="cards">
+            <li class="card" data-id="handbook">
+              <div class="card-top">
+                <span class="card-logo" aria-hidden="true"><svg class="icon"><use href="#i-folder"/></svg></span>
+                <span class="duration"><svg class="icon-sm" aria-hidden="true"><use href="#i-clock"/></svg> כ-40 דק'</span>
+              </div>
+              <h4>חוברת העובד/ת <span class="internal-badge">פנימי</span></h4>
+              <p class="card-desc">הערכים, ההטבות והנהלים החשובים – מרוכזים בתיקיית Drive אחת.</p>
+              <div class="card-actions">
+                <!-- TODO: להחליף בקישור לתיקיית ה-Drive של החברה -->
+                <a class="btn" href="https://drive.google.com" target="_blank" rel="noopener noreferrer">
+                  למסמך <svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg>
+                  <span class="visually-hidden">(נפתח בלשונית חדשה)</span>
+                </a>
+                <label class="done-toggle"><input type="checkbox" /> הושלם</label>
+              </div>
+            </li>
+            <li class="card" data-id="security">
+              <div class="card-top">
+                <span class="card-logo" aria-hidden="true"><svg class="icon"><use href="#i-shield"/></svg></span>
+                <span class="duration"><svg class="icon-sm" aria-hidden="true"><use href="#i-clock"/></svg> כ-30 דק'</span>
+              </div>
+              <h4>מדריך אבטחת מידע <span class="internal-badge">חובה</span></h4>
+              <p class="card-desc">סיסמאות, אימות דו־שלבי וטיפול במידע רגיש – הבסיס שכל אחד צריך.</p>
+              <div class="card-actions">
+                <!-- TODO: להחליף בקישור למדריך אבטחת המידע הפנימי -->
+                <a class="btn" href="https://safety.google/security/security-tips/" target="_blank" rel="noopener noreferrer">
+                  למדריך <svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg>
+                  <span class="visually-hidden">(נפתח בלשונית חדשה)</span>
+                </a>
+                <label class="done-toggle"><input type="checkbox" /> הושלם</label>
+              </div>
+            </li>
+            <li class="card" data-id="phishing">
+              <div class="card-top">
+                <span class="card-logo" aria-hidden="true"><svg class="icon"><use href="#i-fish"/></svg></span>
+                <span class="duration"><svg class="icon-sm" aria-hidden="true"><use href="#i-clock"/></svg> כ-10 דק'</span>
+              </div>
+              <h4>חידון זיהוי פישינג</h4>
+              <p class="card-desc">תרגול אינטראקטיבי קצר לזיהוי הודעות דוא"ל חשודות.</p>
+              <div class="card-actions">
+                <a class="btn" href="https://phishingquiz.withgoogle.com" target="_blank" rel="noopener noreferrer">
+                  לחידון <svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg>
+                  <span class="visually-hidden">(נפתח בלשונית חדשה)</span>
+                </a>
+                <label class="done-toggle"><input type="checkbox" /> הושלם</label>
+              </div>
+            </li>
+            <li class="card" data-id="culture">
+              <div class="card-top">
+                <span class="card-logo" aria-hidden="true"><svg class="icon"><use href="#i-video"/></svg></span>
+                <span class="duration"><svg class="icon-sm" aria-hidden="true"><use href="#i-clock"/></svg> כ-15 דק'</span>
+              </div>
+              <h4>סרטון "מי אנחנו" <span class="internal-badge">פנימי</span></h4>
+              <p class="card-desc">הסיפור של החברה, החזון והאנשים שמאחוריו – בסרטון קצר.</p>
+              <div class="card-actions">
+                <!-- TODO: להחליף בקישור לסרטון התרבות הארגונית -->
+                <a class="btn" href="#" target="_blank" rel="noopener noreferrer">
+                  לצפייה <svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg>
+                  <span class="visually-hidden">(נפתח בלשונית חדשה)</span>
+                </a>
+                <label class="done-toggle"><input type="checkbox" /> הושלם</label>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ First week ============ -->
+    <section class="section" id="first-week" aria-labelledby="week-title" style="padding-top:0">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="week-title">איך ייראה השבוע הראשון?</h2>
+          <p>מסלול מומלץ בלבד – הקצב נקבע יחד איתך.</p>
+        </div>
+        <ol class="week">
+          <li><span class="day-label">יום 1</span><strong>היכרות והתמקמות</strong><p>קבלת ציוד, הרשאות ופגישת היכרות עם הצוות.</p></li>
+          <li><span class="day-label">יום 2</span><strong>כלי העבודה</strong><p>Notion, Slack ו-Jira – עם המנטור/ית לצידך.</p></li>
+          <li><span class="day-label">יום 3</span><strong>נהלים ואבטחה</strong><p>חוברת העובד/ת ומדריך אבטחת המידע.</p></li>
+          <li><span class="day-label">יום 4</span><strong>משימה ראשונה</strong><p>משימה קטנה ומוגדרת כדי להרגיש את העבודה.</p></li>
+          <li><span class="day-label">יום 5</span><strong>סיכום שבוע</strong><p>שיחה פתוחה עם המנהל/ת: מה היה טוב, מה צריך.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ 3. Closing ============ -->
+    <section class="section" id="closing" aria-labelledby="closing-title" style="padding-top:0">
+      <div class="container">
+        <div class="closing">
+          <div>
+            <h2 id="closing-title">אנחנו מחכים לעבוד איתך 💙</h2>
+            <p>
+              בחרנו בך כי אנחנו מאמינים ביכולות, בסקרנות ובערך הייחודי שלך.
+              כל רעיון, שאלה ונקודת מבט חדשה שתביא/י איתך יעזרו לנו לצמוח יחד.
+            </p>
+            <p>
+              זו תחילתה של דרך משותפת – ואנחנו בטוחים שהיא תהיה מרגשת, מלמדת ומוצלחת.
+            </p>
+            <p class="signature">
+              <svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg>
+              בהצלחה! צוות <span data-field="department">[שם התפקיד / מחלקה]</span>
+            </p>
+          </div>
+          <aside class="tip" aria-labelledby="tip-title">
+            <div class="tip-head" id="tip-title">
+              <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
+              טיפ לשבוע הראשון
+            </div>
+            <blockquote>"קחו את הזמן ללמוד, אין צורך למהר."</blockquote>
+            <ul>
+              <li>שאלו הרבה – זה הסימן הכי טוב לעניין ולמחויבות.</li>
+              <li>רשמו לעצמכם מה למדתם בכל יום.</li>
+              <li>קבעו קפה עם לפחות עמית/ה אחד/ת מצוות אחר.</li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © <span id="year"></span> <span data-field="company">[שם החברה]</span> · פורטל קליטה לעובדים חדשים
+    </div>
+  </footer>
+
+  <script>
+    /* =========================================================
+       ⚙️ הגדרות – יש לערוך כאן את הפרטים האישיים
+       ========================================================= */
+    const CONFIG = {
+      company:      "[שם החברה]",
+      department:   "[שם התפקיד / מחלקה]",
+      employeeName: "[שם העובד/ת]",
+      startDate:    "[תאריך]",
+      mentorName:   "[שם המנטור/ית]",
+      mentorRole:   "מנטור/ית אישי/ת · [מחלקה]",
+      mentorEmail:  "mentor@company.com",
+      mentorPhone:  "050-000-0000",
+      mentorChat:   "#",            // קישור ישיר להודעה ב-Slack
+      managerName:  "[שם המנהל/ת]",
+      hrName:       "[שם נציג/ת HR]"
+    };
+
+    // Fill text placeholders
+    document.querySelectorAll("[data-field]").forEach(el => {
+      const v = CONFIG[el.dataset.field];
+      if (v) el.textContent = v;
+    });
+
+    // Fill links
+    const hrefs = {
+      mentorEmail: "mailto:" + CONFIG.mentorEmail,
+      mentorPhone: "tel:" + CONFIG.mentorPhone.replace(/[^\d+]/g, ""),
+      mentorChat:  CONFIG.mentorChat
+    };
+    document.querySelectorAll("[data-href]").forEach(el => {
+      const v = hrefs[el.dataset.href];
+      if (v) el.setAttribute("href", v);
+    });
+
+    // Avatar initial
+    document.querySelectorAll("[data-initials]").forEach(el => {
+      const name = (CONFIG[el.dataset.initials] || "").replace(/[\[\]]/g, "").trim();
+      el.textContent = name ? name.charAt(0) : "?";
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    /* ---------- Category filter ---------- */
+    const filterBtns = document.querySelectorAll(".filter-btn");
+    const categories = document.querySelectorAll(".category");
+    filterBtns.forEach(btn => btn.addEventListener("click", () => {
+      const f = btn.dataset.filter;
+      filterBtns.forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+      categories.forEach(c => { c.hidden = f !== "all" && c.dataset.category !== f; });
+    }));
+
+    /* ---------- Progress tracking (saved per browser) ---------- */
+    const STORAGE_KEY = "onboarding-progress-v1";
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch (e) { saved = {}; }
+
+    const cards = document.querySelectorAll(".card[data-id]");
+    const fill = document.getElementById("progressFill");
+    const text = document.getElementById("progressText");
+    const bar  = document.querySelector('[role="progressbar"]');
+
+    function updateProgress() {
+      const done = [...cards].filter(c => c.classList.contains("is-done")).length;
+      const pct = cards.length ? Math.round((done / cards.length) * 100) : 0;
+      fill.style.width = pct + "%";
+      bar.setAttribute("aria-valuenow", pct);
+      text.textContent = done === cards.length && done > 0
+        ? `כל הכבוד! השלמת את כל ${done} הפריטים 🎉`
+        : `${done} מתוך ${cards.length} הושלמו (${pct}%)`;
+    }
+
+    cards.forEach(card => {
+      const cb = card.querySelector('input[type="checkbox"]');
+      const title = card.querySelector("h4").textContent.trim();
+      cb.setAttribute("aria-label", `סימון "${title}" כהושלם`);
+      if (saved[card.dataset.id]) { cb.checked = true; card.classList.add("is-done"); }
+      cb.addEventListener("change", () => {
+        card.classList.toggle("is-done", cb.checked);
+        saved[card.dataset.id] = cb.checked;
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); } catch (e) {}
+        updateProgress();
+      });
+    });
+    updateProgress();
+  </script>
+</body>
+</html>
